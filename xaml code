@@ -24,14 +24,14 @@
 
 
         <TextBox x:Name="tbGENRE" HorizontalAlignment="Center" Margin="0,225,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="584" Height="34" FontFamily="Bookman Old Style"/>
-       <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,334,0,0" VerticalAlignment="Top" Width="584">
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,334,0,0" VerticalAlignment="Top" Width="584">
             <Button x:Name="BTN_ADD" Content="ADD" Height="35" Width="146" FontFamily="Bookman Old Style" FontWeight="Bold" Background="#FFB37373" Margin="4,0"/>
             <Button x:Name="BTN_UPDATE" Content="UPDATE" Height="35" Width="146" FontFamily="Bookman Old Style" FontWeight="Bold" Background="#FFB37373" Margin="4,0"/>
             <Button x:Name="BTN_DELETE" Content="DELETE" Height="35" Width="146" FontFamily="Bookman Old Style" FontWeight="Bold" Background="#FFB37373" Margin="4,0"/>
             <Button x:Name="BTN_CLEAR" Height="35" Width="117" FontFamily="Bookman Old Style" FontWeight="Bold" Background="#FFB37373" Margin="4,0" Content="CLEAR" VerticalAlignment="Top"/>
         </StackPanel>
-        <ComboBox HorizontalAlignment="Center" Height="37" Margin="0,138,0,0" VerticalAlignment="Top" Width="584"/>
-        <ComboBox HorizontalAlignment="Center" Height="37" Margin="0,267,0,0" VerticalAlignment="Top" Width="584"/>
+        <ComboBox x:Name="Cb1" HorizontalAlignment="Center" Height="37" Margin="0,138,0,0" VerticalAlignment="Top" Width="584"/>
+        <ComboBox x:Name="Cb2" HorizontalAlignment="Center" Height="37" Margin="0,267,0,0" VerticalAlignment="Top" Width="584"/>
 
     </Grid>
 </Window>
