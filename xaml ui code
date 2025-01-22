@@ -1,35 +1,190 @@
-<Window x:Class="LibraryFiona.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:LibraryFiona"
-        mc:Ignorable="d"
-        Title="MainWindow" Height="480" Width="1031">
+<Window
+    x:Class="LibraryFiona.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:LibraryFiona"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="MainWindow"
+    Width="1031"
+    Height="480"
+    mc:Ignorable="d">
 
-    <Grid HorizontalAlignment="Center" Width="1031" Margin="0,0,0,-6">
-        <Label Content="Book Management System" HorizontalAlignment="Center" Margin="0,21,0,0" VerticalAlignment="Top" Height="53" Width="522" FontSize="36" FontFamily="Bookman Old Style" FontWeight="Bold"/>
-        <Label Content="Title" HorizontalAlignment="Left" Margin="80,91,0,0" VerticalAlignment="Top" Height="37" Width="50" FontSize="17" RenderTransformOrigin="0.694,0.785" FontFamily="Bookman Old Style" FontWeight="Bold"/>
-        <Label Content="Author" HorizontalAlignment="Left" Margin="80,138,0,0" VerticalAlignment="Top" Height="37" Width="74" FontSize="17" FontFamily="Bookman Old Style" FontWeight="Bold"/>
-        <Label Content="Published Date" HorizontalAlignment="Left" Margin="80,180,0,0" VerticalAlignment="Top" Height="37" Width="142" FontSize="17" FontFamily="Bookman Old Style" FontWeight="Bold" Background="#00000000"/>
-        <Label Content="ISBN" HorizontalAlignment="Left" Margin="80,222,0,0" VerticalAlignment="Top" Height="37" Width="66" FontSize="17" RenderTransformOrigin="0.758,-0.977" FontFamily="Bookman Old Style" FontWeight="Bold"/>
-        <Label Content="Genre" HorizontalAlignment="Left" Margin="80,264,0,0" VerticalAlignment="Top" Height="37" Width="66" FontSize="17" RenderTransformOrigin="0.672,-0.869" FontFamily="Bookman Old Style" FontWeight="Bold"/>
+    <Grid
+        Width="1031"
+        Margin="0,0,0,-6"
+        HorizontalAlignment="Center">
+        <Grid.Background>
+            <ImageBrush ImageSource="/lit.jpg" />
+        </Grid.Background>
+        <Label
+            Width="522"
+            Height="53"
+            Margin="0,21,0,0"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Top"
+            Content="Book Management System"
+            FontFamily="Bookman Old Style"
+            FontSize="36"
+            FontWeight="Bold" />
+        <Label
+            Width="50"
+            Height="37"
+            Margin="80,91,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Content="Title"
+            FontFamily="Bookman Old Style"
+            FontSize="17"
+            FontWeight="Bold"
+            RenderTransformOrigin="0.694,0.785" />
+        <Label
+            Width="74"
+            Height="37"
+            Margin="80,138,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Content="Author"
+            FontFamily="Bookman Old Style"
+            FontSize="17"
+            FontWeight="Bold" />
+        <Label
+            Width="142"
+            Height="37"
+            Margin="80,180,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Background="#00000000"
+            Content="Published Date"
+            FontFamily="Bookman Old Style"
+            FontSize="17"
+            FontWeight="Bold" />
+        <Label
+            Width="66"
+            Height="37"
+            Margin="80,222,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Content="ISBN"
+            FontFamily="Bookman Old Style"
+            FontSize="17"
+            FontWeight="Bold"
+            RenderTransformOrigin="0.758,-0.977" />
+        <Label
+            Width="66"
+            Height="37"
+            Margin="80,264,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Content="Genre"
+            FontFamily="Bookman Old Style"
+            FontSize="17"
+            FontWeight="Bold"
+            RenderTransformOrigin="0.672,-0.869" />
 
 
-        <TextBox x:Name="tbTITLE" HorizontalAlignment="Center" Margin="0,91,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="584" Height="37" FontFamily="Bookman Old Style"/>
-        <TextBox x:Name="tbPD" HorizontalAlignment="Center" Margin="0,180,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="584" Height="37" FontFamily="Bookman Old Style"/>
+        <TextBox
+            x:Name="tbTITLE"
+            Width="584"
+            Height="37"
+            Margin="0,91,0,0"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Top"
+            FontFamily="Bookman Old Style"
+            Text=""
+            TextWrapping="Wrap" />
+        <TextBox
+            x:Name="tbPD"
+            Width="584"
+            Height="37"
+            Margin="0,180,0,0"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Top"
+            FontFamily="Bookman Old Style"
+            Text=""
+            TextWrapping="Wrap" />
 
 
-        <TextBox x:Name="tbISBN" HorizontalAlignment="Center" Margin="0,225,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="584" Height="34" FontFamily="Bookman Old Style"/>
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,334,0,0" VerticalAlignment="Top" Width="584">
-            <Button x:Name="BTN_ADD" Content="ADD" Height="35" Width="146" FontFamily="Bookman Old Style" FontWeight="Bold" Background="#FFB37373" Margin="4,0" Click="BTN_ADD_Click"/>
-            <Button x:Name="BTN_UPDATE" Content="UPDATE" Height="35" Width="146" FontFamily="Bookman Old Style" FontWeight="Bold" Background="#FFB37373" Margin="4,0"/>
-            <Button x:Name="BTN_DELETE" Content="DELETE" Height="35" Width="146" FontFamily="Bookman Old Style" FontWeight="Bold" Background="#FFB37373" Margin="4,0"/>
-            <Button x:Name="BTN_CLEAR" Height="35" Width="117" FontFamily="Bookman Old Style" FontWeight="Bold" Background="#FFB37373" Margin="4,0" Content="CLEAR" VerticalAlignment="Top" Click="BTN_CLEAR_Click"/>
+        <TextBox
+            x:Name="tbISBN"
+            Width="584"
+            Height="34"
+            Margin="0,225,0,0"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Top"
+            FontFamily="Bookman Old Style"
+            Text=""
+            TextWrapping="Wrap" />
+        <StackPanel
+            Width="584"
+            Margin="0,334,0,0"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Top"
+            Orientation="Horizontal">
+            <Button
+                x:Name="BTN_ADD"
+                Width="146"
+                Height="35"
+                Margin="4,0"
+                Background="#FFB37373"
+                Click="BTN_ADD_Click"
+                Content="ADD"
+                FontFamily="Bookman Old Style"
+                FontWeight="Bold" />
+            <Button
+                x:Name="BTN_UPDATE"
+                Width="146"
+                Height="35"
+                Margin="4,0"
+                Background="#FFB37373"
+                Click="BTN_UPDATE_Click"
+                Content="UPDATE"
+                FontFamily="Bookman Old Style"
+                FontWeight="Bold" />
+            <Button
+                x:Name="BTN_DELETE"
+                Width="146"
+                Height="35"
+                Margin="4,0"
+                Background="#FFB37373"
+                Click="BTN_DELETE_Click"
+                Content="DELETE"
+                FontFamily="Bookman Old Style"
+                FontWeight="Bold" />
+            <Button
+                x:Name="BTN_CLEAR"
+                Width="117"
+                Height="35"
+                Margin="4,0"
+                VerticalAlignment="Top"
+                Background="#FFB37373"
+                Click="BTN_CLEAR_Click"
+                Content="CLEAR"
+                FontFamily="Bookman Old Style"
+                FontWeight="Bold" />
         </StackPanel>
-        <ComboBox x:Name="Cb_Author" HorizontalAlignment="Center" Height="37" Margin="0,138,0,0" VerticalAlignment="Top" Width="584" SelectionChanged="Cb_Author_SelectionChanged" IsEditable="True" FontFamily="Bookman Old Style"/>
-        <ComboBox x:Name="Cb_Genre" HorizontalAlignment="Center" Height="37" Margin="0,267,0,0" VerticalAlignment="Top" Width="584" SelectionChanged="Cb_Genre_SelectionChanged" IsEditable="True" FontFamily="Bookman Old Style"/>
-        <Button x:Name="BTN_Load" Content="LOAD" FontFamily="Bookman Old Style" FontWeight="Bold" Background="#FFB37373" Margin="455,390,430,45" Click="BTN_Load_Click"/>
+        <ComboBox
+            x:Name="Cb_Author"
+            Width="584"
+            Height="37"
+            Margin="0,138,0,0"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Top"
+            FontFamily="Bookman Old Style"
+            IsEditable="True"
+            IsTextSearchEnabled="False"
+            SelectionChanged="Cb_Author_SelectionChanged" />
+        <ComboBox
+            x:Name="Cb_Genre"
+            Width="584"
+            Height="37"
+            Margin="0,267,0,0"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Top"
+            FontFamily="Bookman Old Style"
+            IsEditable="True"
+            IsTextSearchEnabled="False"
+            SelectionChanged="Cb_Genre_SelectionChanged" />
 
     </Grid>
 </Window>
