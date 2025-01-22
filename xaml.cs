@@ -19,7 +19,7 @@ namespace LibraryFiona
     /// </summary>
     public partial class MainWindow : Window
     {
-        private string filePath = "";
+        private string filePath = "\"C:\\Users\\ZachyBoi\\source\\repos\\LibraryFiona\\LibraryFiona\\default_books.txt\"";
         private List<Book> books = new List<Book>();
         private int currentIndex = -1;
 
@@ -27,65 +27,66 @@ namespace LibraryFiona
         {
             InitializeComponent();
 
+            // Define the default file path
+            filePath = @"C:\Users\ZachyBoi\source\repos\LibraryFiona\LibraryFiona\default_books.txt"; // Update with your actual file path
 
-        }
-
-        private void BTN_Load_Click(object sender, RoutedEventArgs e)
-        {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-
-            openFileDialog.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*"; //restrict to text files when choosing input file
-
-            if (openFileDialog.ShowDialog() == true)
+            // Check if the file exists
+            if (File.Exists(filePath))
             {
-                filePath = openFileDialog.FileName; // store the selected file path
-                LoadBookData(); // load data from the file
+                LoadBookData(); // Load the file automatically
             }
-
+            else
+            {
+                MessageBox.Show($"File not found: {filePath}. Please place the file in the correct location.", "File Not Found");
+            }
         }
+
 
         private void LoadBookData()
         {
             try
             {
                 books.Clear();
-                var lines = File.ReadAllLines(filePath);
 
-                foreach (var line in lines)
+                // Use StreamReader to read the file line by line
+                using (StreamReader reader = new StreamReader(filePath))
                 {
-                    var parts = line.Split('|');
-                    if (parts.Length == 5)
+                    string line;
+                    while ((line = reader.ReadLine()) != null)
                     {
-                        books.Add(new Book
+                        var parts = line.Split('|');
+                        if (parts.Length == 5)
                         {
-                            Title = parts[0],
-                            Author = parts[1],
-                            PublishedDate = parts[2],
-                            ISBN = parts[3],
-                            Genre = parts[4]
-                        });
+                            books.Add(new Book
+                            {
+                                Title = parts[0],
+                                Author = parts[1],
+                                PublishedDate = parts[2],
+                                ISBN = parts[3],
+                                Genre = parts[4]
+                            });
+                        }
                     }
                 }
 
                 if (books.Count > 0)
                 {
-                    PopulateComboBoxes(); // Populate Author and Genre combo boxes
-                    currentIndex = 0; // Start with the first book
-                    PopulateForm(books[currentIndex]); // Populate the form with the first book's data
+                    PopulateComboBoxes(); // Populate filters
+                    currentIndex = 0;     // Start with the first book
+                    PopulateForm(books[currentIndex]); // Display the first book
                 }
                 else
                 {
                     MessageBox.Show("No books found in the file.", "Info");
                     ClearForm();
-
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error loading File: " + ex.Message);
+                MessageBox.Show($"Error loading file: {ex.Message}", "Error");
             }
-
         }
+
 
         private void PopulateForm(Book book)
         {
@@ -101,16 +102,15 @@ namespace LibraryFiona
 
         private void PopulateComboBoxes()
         {
-            Cb_Author.Items.Clear();
-            Cb_Genre.Items.Clear();
-
+            // Get distinct authors and genres
             var uniqueAuthors = books.Select(b => b.Author).Distinct().OrderBy(a => a).ToList();
             var uniqueGenres = books.Select(b => b.Genre).Distinct().OrderBy(g => g).ToList();
 
+            // Assign the updated lists to the ComboBoxes
             Cb_Author.ItemsSource = uniqueAuthors;
             Cb_Genre.ItemsSource = uniqueGenres;
-
         }
+
 
         private void ClearForm()
         {
@@ -132,10 +132,6 @@ namespace LibraryFiona
             public string Genre { get; set; }
         }
 
-        private void BTN_CLEAR_Click(object sender, RoutedEventArgs e)
-        {
-            ClearForm();
-        }
 
         private void Cb_Author_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -182,6 +178,13 @@ namespace LibraryFiona
                 return;
             }
 
+            // Check if the book already exists by ISBN
+            if (books.Any(b => b.ISBN == tbISBN.Text))
+            {
+                MessageBox.Show("A book with this ISBN already exists.", "Duplicate Entry");
+                return;
+            }
+
             // Create a new book object from the input fields
             var newBook = new Book
             {
@@ -192,11 +195,14 @@ namespace LibraryFiona
                 Genre = Cb_Genre.Text
             };
 
-            books.Add(newBook); // Add the new book to the in-memory list
-            SaveBooksToFile();  // Save updated data back to the file
-            LoadBookData();     // Reload the updated data from the file
+            // Add the new book to the in-memory list and save
+            books.Add(newBook);
+            SaveBooksToFile();
+            LoadBookData();
             MessageBox.Show("Book added successfully!");
+            ClearForm(); // Clear the input form after adding
         }
+
 
         private void SaveBooksToFile()
         {
@@ -211,6 +217,49 @@ namespace LibraryFiona
                 // Display an error message if saving fails
                 MessageBox.Show("Error saving file: " + ex.Message, "Error");
             }
+        }
+
+        private void BTN_UPDATE_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void BTN_DELETE_Click(object sender, RoutedEventArgs e)
+        {
+            // Ensure a book is selected
+            if (string.IsNullOrWhiteSpace(tbISBN.Text))
+            {
+                MessageBox.Show("No book selected to delete.", "Delete Error");
+                return;
+            }
+
+            // Find the book to delete using the ISBN (unique identifier)
+            var bookToDelete = books.FirstOrDefault(b => b.ISBN == tbISBN.Text);
+
+            if (bookToDelete != null)
+            {
+                // Confirm deletion
+                var result = MessageBox.Show($"Are you sure you want to delete the book \"{bookToDelete.Title}\"?", "Confirm Deletion", MessageBoxButton.YesNo);
+                if (result == MessageBoxResult.Yes)
+                {
+                    books.Remove(bookToDelete); // Remove the book from the list
+                    SaveBooksToFile();         // Save the updated list to the file
+                    LoadBookData();            // Reload the updated data
+                    PopulateComboBoxes();      // Update the ComboBoxes
+                    ClearForm();               // Clear the form
+                    currentIndex = -1;         // Reset the index
+                    MessageBox.Show("Book deleted successfully!");
+                }
+            }
+            else
+            {
+                MessageBox.Show("Book not found in the list. Please try again.", "Error");
+            }
+        }
+
+        private void BTN_CLEAR_Click(object sender, RoutedEventArgs e)
+        {
+            ClearForm();
         }
     }
 }
