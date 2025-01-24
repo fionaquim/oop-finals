@@ -1,4 +1,3 @@
-using Microsoft.Win32;
 using System.IO;
 using System.Text;
 using System.Windows;
@@ -10,6 +9,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Microsoft.Win32;
 
 
 namespace LibraryFiona
@@ -221,8 +221,45 @@ namespace LibraryFiona
 
         private void BTN_UPDATE_Click(object sender, RoutedEventArgs e)
         {
+            // Ensure all fields are filled
+            if (string.IsNullOrWhiteSpace(tbTITLE.Text) || string.IsNullOrWhiteSpace(Cb_Author.Text) ||
+                string.IsNullOrWhiteSpace(tbPD.Text) || string.IsNullOrWhiteSpace(Cb_Genre.Text))
+            {
+                MessageBox.Show("All fields must be filled out to update the book!", "Validation Error");
+                return;
+            }
 
+            // Find the book to update using the Title (unique identifier)
+            Book bookToUpdate = books.FirstOrDefault(b => b.Title == tbTITLE.Text);
+
+            if (bookToUpdate != null)
+            {
+                // Confirm update
+                MessageBoxResult result = MessageBox.Show(
+                    $"Are you sure you want to update the book \"{bookToUpdate.Title}\"?",
+                    "Confirm Update",
+                    MessageBoxButton.YesNo);
+
+                if (result == MessageBoxResult.Yes)
+                {
+                    // Update the book's details
+                    bookToUpdate.Author = Cb_Author.Text;
+                    bookToUpdate.PublishedDate = tbPD.Text;
+                    bookToUpdate.Genre = Cb_Genre.Text;
+
+                    // Save the updated list to the file
+                    SaveBooksToFile();
+                    LoadBookData();            // Reload the updated data
+                    PopulateComboBoxes();      // Update the ComboBoxes
+                    MessageBox.Show("Book updated successfully!");
+                }
+            }
+            else
+            {
+                MessageBox.Show("Book not found. Please ensure the correct title is entered.", "Error");
+            }
         }
+
 
         private void BTN_DELETE_Click(object sender, RoutedEventArgs e)
         {
