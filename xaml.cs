@@ -186,7 +186,7 @@ namespace LibraryFiona
             }
 
             // Create a new book object from the input fields
-            var newBook = new Book
+            Book newBook = new Book
             {
                 Title = tbTITLE.Text,
                 Author = Cb_Author.Text,
@@ -271,12 +271,12 @@ namespace LibraryFiona
             }
 
             // Find the book to delete using the ISBN (unique identifier)
-            var bookToDelete = books.FirstOrDefault(b => b.ISBN == tbISBN.Text);
+            Book bookToDelete = books.FirstOrDefault(b => b.ISBN == tbISBN.Text);
 
             if (bookToDelete != null)
             {
                 // Confirm deletion
-                var result = MessageBox.Show($"Are you sure you want to delete the book \"{bookToDelete.Title}\"?", "Confirm Deletion", MessageBoxButton.YesNo);
+               MessageBoxResult result = MessageBox.Show($"Are you sure you want to delete the book \"{bookToDelete.Title}\"?", "Confirm Deletion", MessageBoxButton.YesNo);
                 if (result == MessageBoxResult.Yes)
                 {
                     books.Remove(bookToDelete); // Remove the book from the list
