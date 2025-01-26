@@ -111,17 +111,6 @@ namespace LibraryFiona
             Cb_Genre.ItemsSource = uniqueGenres;
         }
 
-
-        private void ClearForm()
-        {
-            tbTITLE.Text = "";
-            Cb_Author.SelectedIndex = -1;
-            tbPD.Text = "";
-            tbISBN.Text = "";
-            Cb_Genre.SelectedIndex = -1;
-
-        }
-
         public class Book
         {
             public string Title { get; set; }
@@ -292,6 +281,16 @@ namespace LibraryFiona
             {
                 MessageBox.Show("Book not found in the list. Please try again.", "Error");
             }
+        }
+
+        private void ClearForm()
+        {
+            tbTITLE.Text = "";
+            Cb_Author.SelectedIndex = -1;
+            tbPD.Text = "";
+            tbISBN.Text = "";
+            Cb_Genre.SelectedIndex = -1;
+
         }
 
         private void BTN_CLEAR_Click(object sender, RoutedEventArgs e)
