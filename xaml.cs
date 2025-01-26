@@ -1,7 +1,10 @@
+using System.Collections.Generic;
 using System.IO;
+using System.Reflection.PortableExecutable;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -21,7 +24,7 @@ namespace LibraryFiona
     {
         private string filePath = "\"C:\\Users\\ZachyBoi\\source\\repos\\LibraryFiona\\LibraryFiona\\default_books.txt\"";
         private List<Book> books = new List<Book>();
-        private int currentIndex = -1;
+        private int currentIndex = -1; // (initialized to -1, meaning no book is displayed initially).
 
         public MainWindow()
         {
@@ -46,18 +49,21 @@ namespace LibraryFiona
         {
             try
             {
-                books.Clear();
+                books.Clear(); // ensures that the books list is emptied before loading new data
 
                 // Use StreamReader to read the file line by line
                 using (StreamReader reader = new StreamReader(filePath))
                 {
-                    string line;
+                    // ReadLine() method of StreamReader reads one line of the file at a time.
+                    // The loop continues until there are no more lines to read (ReadLine() returns null when the end of the file is reached).
+                    // Each line is assigned to the line variable.
+                    string line; // will be used to store each line of text that is read from the file
                     while ((line = reader.ReadLine()) != null)
                     {
-                        var parts = line.Split('|');
+                        var parts = line.Split('|'); // splits the string line into an array of substrings
                         if (parts.Length == 5)
                         {
-                            books.Add(new Book
+                            books.Add(new Book // The Add() method is called on the books list to add the newly created Book object to the list.
                             {
                                 Title = parts[0],
                                 Author = parts[1],
@@ -69,7 +75,7 @@ namespace LibraryFiona
                     }
                 }
 
-                if (books.Count > 0)
+                if (books.Count > 0) //This line checks if there are any books in the books list after the file has been processed.                    
                 {
                     PopulateComboBoxes(); // Populate filters
                     currentIndex = 0;     // Start with the first book
@@ -90,7 +96,8 @@ namespace LibraryFiona
 
         private void PopulateForm(Book book)
         {
-            if (book != null)
+            if (book != null) // if book not equal to = null
+            // If the book is null, the code inside the if block won't be executed
             {
                 tbTITLE.Text = book.Title;
                 Cb_Author.Text = book.Author;
@@ -99,10 +106,14 @@ namespace LibraryFiona
                 Cb_Genre.Text = book.Genre;
             }
         }
-
+        /// Select(b => b.Author) to get the Author property of each book.
+        /// Distinct() removes duplicate authors, ensuring each author appears only once.
+        /// OrderBy(a => a) sorts the authors alphabetically in ascending order. <summary>
+        /// Select(b => b.Author) to get the Author property of each book.
+        /// ToList() converts the sorted authors into a list that can be used by the ComboBox.
         private void PopulateComboBoxes()
         {
-            // Get distinct authors and genres
+            // Get distinct authors from the books list,then order them alphabetically, and convert to a list
             var uniqueAuthors = books.Select(b => b.Author).Distinct().OrderBy(a => a).ToList();
             var uniqueGenres = books.Select(b => b.Genre).Distinct().OrderBy(g => g).ToList();
 
@@ -111,7 +122,7 @@ namespace LibraryFiona
             Cb_Genre.ItemsSource = uniqueGenres;
         }
 
-        public class Book
+        public class Book // blueprint for representing a book
         {
             public string Title { get; set; }
             public string Description { get; set; }
@@ -121,7 +132,12 @@ namespace LibraryFiona
             public string Genre { get; set; }
         }
 
-
+        //When the user selects an author in the Cb_Author ComboBox, this method is triggered.
+        //It gets the selected author as a string (selectedAuthor).
+        //If a valid author is selected:
+        //It filters the books list to find books written by that author.
+        //It passes the filtered list to DisplayFilteredBooks to update the UI with the results.
+        //If no author is selected or the selection is invalid (e.g., null or empty), nothing happens.
         private void Cb_Author_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var selectedAuthor = Cb_Author.SelectedItem?.ToString();
@@ -131,7 +147,13 @@ namespace LibraryFiona
                 DisplayFilteredBooks(filteredBooks);
             }
         }
-
+        // //When the user selects a genre in the Cb_Genre ComboBox, this method is triggered automatically.
+        //The method retrieves the selected genre(selectedGenre) as a string.
+        //If the genre is valid(not null or empty) :
+        //The books list is filtered to include only the books with the matching Genre.
+        //The filtered list (filteredBooks) is passed to the DisplayFilteredBooks method,
+        //which updates the UI to display the matching books.
+        //If no genre is selected or the selected genre is invalid, nothing happens.
         private void Cb_Genre_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var selectedGenre = Cb_Genre.SelectedItem?.ToString();
@@ -145,7 +167,7 @@ namespace LibraryFiona
         // Display the first book from the filtered list or show a message if none match
         private void DisplayFilteredBooks(List<Book> filteredBooks)
         {
-            if (filteredBooks.Any())
+            if (filteredBooks.Any()) // if contains any books
             {
                 PopulateForm(filteredBooks.First());
             }
@@ -221,7 +243,7 @@ namespace LibraryFiona
             // Find the book to update using the Title (unique identifier)
             Book bookToUpdate = books.FirstOrDefault(b => b.Title == tbTITLE.Text);
 
-            if (bookToUpdate != null)
+            if (bookToUpdate != null) // checks if book was found
             {
                 // Confirm update
                 MessageBoxResult result = MessageBox.Show(
